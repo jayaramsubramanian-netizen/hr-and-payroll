@@ -1,0 +1,8 @@
+{
+  "name": "HR & Payroll Pro",
+  "description": "A comprehensive Human Resources and Payroll management application designed for machine shop companies in India. It features role-based access, two-factor authentication with face recognition, and a dedicated clock-in/out kiosk mode.",
+  "requestFramePermissions": [
+    "camera",
+    "geolocation"
+  ]
+}
