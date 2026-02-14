@@ -110,7 +110,14 @@ const EmployeeProfilePage: React.FC<ProfilePageProps> = ({ employeeId }) => {
     try {
       setLoading(true);
       const targetId = employeeId || currentUser.id;
-      console.log("Fetching profile for ID:", targetId, "employeeId prop:", employeeId, "currentUser.id:", currentUser.id);
+      console.log(
+        "Fetching profile for ID:",
+        targetId,
+        "employeeId prop:",
+        employeeId,
+        "currentUser.id:",
+        currentUser.id,
+      );
 
       const { data, error } = await supabase
         .from("users")

@@ -26,7 +26,7 @@ const ReportsPage: React.FC = () => {
       let query = supabase
         .from("users")
         .select(
-          "id, name, department, sub_department, designation, role, basic_salary, hra, allowances, pf_enabled, pf_percentage, esi_enabled, esi_amount, employment_status",
+          "id, name, department, sub_department, role, basic_salary, hra, allowances, pf_enabled, pf_percentage, esi_enabled, esi_amount, employment_status",
         )
         .eq("employment_status", "Active");
 
@@ -65,7 +65,6 @@ const ReportsPage: React.FC = () => {
           Name: emp.name,
           Department: emp.department || "-",
           "Sub-Department": emp.sub_department || "-",
-          Designation: emp.designation || "-",
           Role: emp.role,
           "Basic Salary": basic.toFixed(2),
           HRA: hra.toFixed(2),
@@ -326,7 +325,7 @@ const ReportsPage: React.FC = () => {
         .select(
           `
         *,
-        users!payroll_records_employee_id_fkey (name, department, sub_department, designation)
+        users!payroll_records_employee_id_fkey (name, department, sub_department)
       `,
         )
         .eq("month", selectedMonth);
@@ -379,7 +378,6 @@ const ReportsPage: React.FC = () => {
         Name: record.users?.name || "-",
         Department: record.users?.department || "-",
         "Sub-Department": record.users?.sub_department || "-",
-        Designation: record.users?.designation || "-",
         Month: record.month,
         "Days Present": record.days_present,
         "Days Absent": record.days_absent,

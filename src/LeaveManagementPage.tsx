@@ -111,7 +111,6 @@ const LeaveManagementPage: React.FC = () => {
     setSubmitting(true);
     try {
       const { error } = await supabase.from("leave_requests").insert({
-        id: `LR-${currentUser.id}-${Date.now()}`,
         employee_id: currentUser.id,
         from_date: formData.fromDate,
         to_date: formData.toDate,

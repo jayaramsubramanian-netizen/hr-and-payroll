@@ -95,7 +95,6 @@ const PayrollManagementPage: React.FC = () => {
           : 0;
 
         return {
-          id: `PS-${emp.id}-${year}-${month}`,
           employee_id: emp.id,
           month,
           year,

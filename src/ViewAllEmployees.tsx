@@ -458,7 +458,10 @@ const ViewAllEmployees: React.FC = () => {
               <div className="flex gap-3">
                 <button
                   onClick={() => {
-                    console.log("View Full Profile clicked for employee:", selectedEmployee?.id);
+                    console.log(
+                      "View Full Profile clicked for employee:",
+                      selectedEmployee?.id,
+                    );
                     setShowDetails(false);
                     const event = new CustomEvent("navigate", {
                       detail: {

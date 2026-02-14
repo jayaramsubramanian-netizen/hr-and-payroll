@@ -131,19 +131,26 @@ function AppContent() {
           return <ReportsPage />;
         }
         return <UnauthorizedPage />;
-      
+
       case "my-profile":
         return <EmployeeProfilePage />;
 
       case "employee-profile":
-        console.log("Rendering employee profile with ID:", pageData?.employeeId);
+        console.log(
+          "Rendering employee profile with ID:",
+          pageData?.employeeId,
+        );
         return <EmployeeProfilePage employeeId={pageData?.employeeId} />;
 
       case "holidays":
         return <HolidayManagementPage />;
 
       default:
-        console.log("No matching case for page:", currentPage, "returning Dashboard");
+        console.log(
+          "No matching case for page:",
+          currentPage,
+          "returning Dashboard",
+        );
         return <Dashboard />;
     }
   };

@@ -36,11 +36,13 @@ const HolidayManagementPage: React.FC = () => {
   const fetchHolidays = async () => {
     try {
       setLoading(true);
+      console.log("Fetching holidays...");
       const { data, error } = await supabase
         .from("company_holidays")
         .select("*")
         .order("holiday_date", { ascending: true });
 
+      console.log("Holidays fetch result:", { data, error });
       if (error) throw error;
       setHolidays(data || []);
     } catch (error) {
