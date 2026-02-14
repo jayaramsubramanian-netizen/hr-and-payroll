@@ -347,44 +347,7 @@ const LeaveManagementPage: React.FC = () => {
                     <option value="Unpaid Leave">Unpaid Leave</option>
                   </select>
                 </div>
-                {/* Leave Balance Display */}
-                {formData.leaveType && currentUser && (
-                  <div className="md:col-span-2">
-                    <div className="bg-blue-50 border-2 border-blue-200 rounded-lg p-4">
-                      <div className="flex items-center gap-2 mb-2">
-                        <span className="text-blue-800 font-semibold">
-                          📊 Your Leave Balance:
-                        </span>
-                      </div>
-                      <div className="grid grid-cols-4 gap-4">
-                        <div className="text-center">
-                          <p className="text-sm text-gray-600">Casual Leave</p>
-                          <p className="text-2xl font-bold text-blue-600">
-                            {currentUser.casual_leave_balance || 0}
-                          </p>
-                        </div>
-                        <div className="text-center">
-                          <p className="text-sm text-gray-600">Sick Leave</p>
-                          <p className="text-2xl font-bold text-green-600">
-                            {currentUser.sick_leave_balance || 0}
-                          </p>
-                        </div>
-                        <div className="text-center">
-                          <p className="text-sm text-gray-600">Earned Leave</p>
-                          <p className="text-2xl font-bold text-purple-600">
-                            {currentUser.earned_leave_balance || 0}
-                          </p>
-                        </div>
-                        <div className="text-center">
-                          <p className="text-sm text-gray-600">Selected Type</p>
-                          <p className="text-2xl font-bold text-red-600">
-                            {getLeaveBalance(currentUser, formData.leaveType)}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
+
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Total Days
@@ -567,19 +530,11 @@ const LeaveManagementPage: React.FC = () => {
                         leave.from_date,
                         leave.to_date,
                       );
-                      const balance = getLeaveBalance(
-                        leave.users,
-                        leave.leave_type,
-                      );
-                      const isOverBalance =
-                        typeof balance === "number" && daysRequested > balance;
 
                       return (
                         <tr
                           key={leave.id}
-                          className={
-                            isOverBalance ? "bg-red-50" : "hover:bg-gray-50"
-                          }
+                          className="hover:bg-gray-50"
                         >
                           <td className="w-32 px-4 py-4">
                             <div className="font-medium text-gray-900 text-sm truncate">
@@ -616,24 +571,6 @@ const LeaveManagementPage: React.FC = () => {
                           <td className="w-28 px-4 py-4">
                             <div className="text-sm text-gray-700 truncate">
                               {leave.leave_type}
-                            </div>
-                          </td>
-                          <td className="w-20 px-4 py-4">
-                            <div className="text-center">
-                              <span
-                                className={`text-lg font-bold ${
-                                  isOverBalance
-                                    ? "text-red-600"
-                                    : "text-green-600"
-                                }`}
-                              >
-                                {balance}
-                              </span>
-                              {isOverBalance && (
-                                <div className="text-xs text-red-600 font-medium">
-                                  ⚠️ Low
-                                </div>
-                              )}
                             </div>
                           </td>
                           <td className="w-auto px-4 py-4">
