@@ -17,10 +17,6 @@ interface LeaveRequest {
   users?: {
     name: string;
     department: string;
-    casual_leave_balance?: number;
-    sick_leave_balance?: number;
-    earned_leave_balance?: number;
-    unpaid_leave_taken?: number;
   };
 }
 
@@ -74,11 +70,7 @@ const LeaveManagementPage: React.FC = () => {
       *,
       users!leave_requests_employee_id_fkey (
         name, 
-        department,
-        casual_leave_balance,
-        sick_leave_balance,
-        earned_leave_balance,
-        unpaid_leave_taken
+        department
       )
     `,
           )
@@ -180,30 +172,6 @@ const LeaveManagementPage: React.FC = () => {
 
       const daysRequested = calculateDays(leave.from_date, leave.to_date);
 
-      // Calculate new balance
-      let updateField = "";
-      let currentBalance = 0;
-
-      switch (leave.leave_type) {
-        case "Casual Leave":
-          updateField = "casual_leave_balance";
-          currentBalance = leave.users?.casual_leave_balance || 0;
-          break;
-        case "Sick Leave":
-          updateField = "sick_leave_balance";
-          currentBalance = leave.users?.sick_leave_balance || 0;
-          break;
-        case "Earned Leave":
-          updateField = "earned_leave_balance";
-          currentBalance = leave.users?.earned_leave_balance || 0;
-          break;
-        case "Unpaid Leave":
-          updateField = "unpaid_leave_taken";
-          currentBalance = leave.users?.unpaid_leave_taken || 0;
-          // For unpaid, we ADD instead of subtract
-          break;
-      }
-
       // Update leave request status
       const { error: leaveError } = await supabase
         .from("leave_requests")
@@ -216,23 +184,8 @@ const LeaveManagementPage: React.FC = () => {
 
       if (leaveError) throw leaveError;
 
-      // Update employee's leave balance
-      if (updateField) {
-        const newBalance =
-          leave.leave_type === "Unpaid Leave"
-            ? currentBalance + daysRequested // Add unpaid days
-            : currentBalance - daysRequested; // Subtract for others
-
-        const { error: balanceError } = await supabase
-          .from("users")
-          .update({ [updateField]: newBalance })
-          .eq("id", leave.employee_id);
-
-        if (balanceError) throw balanceError;
-      }
-
       alert(
-        `✅ Leave fully approved! ${daysRequested} days deducted from ${leave.leave_type}`,
+        `✅ Leave fully approved! ${daysRequested} days approved for ${leave.leave_type}`,
       );
       fetchLeaves();
     } catch (error: any) {
@@ -280,64 +233,7 @@ const LeaveManagementPage: React.FC = () => {
     const diff = new Date(to).getTime() - new Date(from).getTime();
     return Math.ceil(diff / (1000 * 60 * 60 * 24)) + 1;
   };
-  const getLeaveBalance = (user: any, leaveType: string) => {
-    if (!user) return 0;
 
-    switch (leaveType) {
-      case "Casual Leave":
-        return user.casual_leave_balance || 0;
-      case "Sick Leave":
-        return user.sick_leave_balance || 0;
-      case "Earned Leave":
-        return user.earned_leave_balance || 0;
-      case "Unpaid Leave":
-        return "∞"; // Unlimited unpaid leave
-      default:
-        return 0;
-    }
-  };
-  {
-    /* Leave Balance Display */
-  }
-  {
-    formData.leaveType && currentUser && (
-      <div className="md:col-span-2">
-        <div className="bg-blue-50 border-2 border-blue-200 rounded-lg p-4">
-          <div className="flex items-center gap-2 mb-2">
-            <span className="text-blue-800 font-semibold">
-              📊 Your Leave Balance:
-            </span>
-          </div>
-          <div className="grid grid-cols-4 gap-4">
-            <div className="text-center">
-              <p className="text-sm text-gray-600">Casual Leave</p>
-              <p className="text-2xl font-bold text-blue-600">
-                {currentUser.casual_leave_balance || 0}
-              </p>
-            </div>
-            <div className="text-center">
-              <p className="text-sm text-gray-600">Sick Leave</p>
-              <p className="text-2xl font-bold text-green-600">
-                {currentUser.sick_leave_balance || 0}
-              </p>
-            </div>
-            <div className="text-center">
-              <p className="text-sm text-gray-600">Earned Leave</p>
-              <p className="text-2xl font-bold text-purple-600">
-                {currentUser.earned_leave_balance || 0}
-              </p>
-            </div>
-            <div className="text-center">
-              <p className="text-sm text-gray-600">Selected Type</p>
-              <p className="text-2xl font-bold text-red-600">
-                {getLeaveBalance(currentUser, formData.leaveType)}
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
   const canApprove = (leave: LeaveRequest) => {
     // Manager can approve if not yet manager approved
     if (

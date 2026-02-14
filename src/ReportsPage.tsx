@@ -164,22 +164,14 @@ const ReportsPage: React.FC = () => {
   const generateLeaveReport = async () => {
     setLoading(true);
     try {
-      let query = supabase
+      const { data: employees, error: empError } = await supabase
         .from("users")
-        .select(
-          "id, name, department, sub_department, casual_leave_balance, sick_leave_balance, earned_leave_balance, unpaid_leave_taken",
-        )
+        .select("id, name, department, sub_department")
         .eq("employment_status", "Active");
 
-      if (filters.department) {
-        query = query.eq("department", filters.department);
-      }
-
-      const { data: employees, error } = await query.order("name");
-
-      if (error) {
-        console.error("Database error:", error);
-        throw error;
+      if (empError) {
+        console.error("Database error:", empError);
+        throw empError;
       }
 
       if (!employees || employees.length === 0) {
@@ -188,20 +180,43 @@ const ReportsPage: React.FC = () => {
         return;
       }
 
-      const processedData = employees.map((emp) => ({
-        "Employee ID": emp.id,
-        Name: emp.name,
-        Department: emp.department,
-        "Sub-Department": emp.sub_department || "-",
-        "Casual Leave Balance": emp.casual_leave_balance || 0,
-        "Sick Leave Balance": emp.sick_leave_balance || 0,
-        "Earned Leave Balance": emp.earned_leave_balance || 0,
-        "Unpaid Leave Taken": emp.unpaid_leave_taken || 0,
-        "Total Leave Balance":
-          (emp.casual_leave_balance || 0) +
-          (emp.sick_leave_balance || 0) +
-          (emp.earned_leave_balance || 0),
-      }));
+      let query = supabase.from("users").select("id, name, department, sub_department").eq("employment_status", "Active");
+
+      if (filters.department) {
+        query = query.eq("department", filters.department);
+      }
+
+      // Get leave requests to calculate leaves taken
+      const { data: leaveRequests } = await supabase
+        .from("leave_requests")
+        .select("employee_id, leave_type, status")
+        .eq("status", "Approved");
+
+      const leaveCountByType = (leaveRequests || []).reduce((acc, req) => {
+        if (!acc[req.employee_id]) {
+          acc[req.employee_id] = { casual: 0, sick: 0, earned: 0, unpaid: 0 };
+        }
+        if (req.leave_type === "Casual Leave") acc[req.employee_id].casual++;
+        else if (req.leave_type === "Sick Leave") acc[req.employee_id].sick++;
+        else if (req.leave_type === "Earned Leave") acc[req.employee_id].earned++;
+        else if (req.leave_type === "Unpaid Leave") acc[req.employee_id].unpaid++;
+        return acc;
+      }, {} as Record<string, any>);
+
+      const processedData = employees.map((emp) => {
+        const leave = leaveCountByType[emp.id] || { casual: 0, sick: 0, earned: 0, unpaid: 0 };
+        return {
+          "Employee ID": emp.id,
+          Name: emp.name,
+          Department: emp.department,
+          "Sub-Department": emp.sub_department || "-",
+          "Casual Leave Requests": leave.casual,
+          "Sick Leave Requests": leave.sick,
+          "Earned Leave Requests": leave.earned,
+          "Unpaid Leave Requests": leave.unpaid,
+          "Total Approved Leaves": leave.casual + leave.sick + leave.earned + leave.unpaid,
+        };
+      });
 
       setReportData(processedData);
     } catch (error: any) {
