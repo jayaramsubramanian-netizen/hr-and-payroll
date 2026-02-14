@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx vite build:*)",
+      "Bash(grep:*)",
+      "Bash(findstr:*)",
+      "Bash(Select-String \"ReportsPage\")",
+      "Bash(npm run build:*)"
+    ]
+  }
+}

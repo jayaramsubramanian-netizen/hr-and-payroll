@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+@theme {
+  --color-avlm-red: #ab2328;
+  --color-avlm-red-light: #f8e6e7;
+  --color-avlm-red-dark: #8a1c20;
+
+  --color-avlm-blue: #06038d;
+  --color-avlm-blue-light: #e6e5f5;
+  --color-avlm-blue-dark: #050271;
+}
+
+body {
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu",
+    sans-serif;
+}
