@@ -55,7 +55,6 @@ const ClockInOutPage: React.FC = () => {
       const { data, error } = await supabase
         .from("attendance")
         .insert({
-          id: `ATT-${currentUser.id}-${today}-1`,
           employee_id: currentUser.id,
           date: today,
           clock_in: time,

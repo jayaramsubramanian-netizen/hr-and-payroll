@@ -167,7 +167,6 @@ const KioskModePage: React.FC = () => {
         const { error: insertError } = await supabase
           .from("attendance")
           .insert({
-            id: `ATT-${empId}-${today}-${nextEntryNumber}`,
             employee_id: empId,
             date: today,
             clock_in: time,

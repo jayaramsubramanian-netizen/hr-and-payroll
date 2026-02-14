@@ -219,11 +219,8 @@ const AttendanceManagementPage: React.FC = () => {
     status: "Present" | "Absent" | "Leave",
   ) => {
     try {
-      const attendanceId = `ATT-${employeeId}-${selectedDate}-1`;
-
       const { error } = await supabase.from("attendance").upsert(
         {
-          id: attendanceId,
           employee_id: employeeId,
           date: selectedDate,
           status: status,
@@ -234,7 +231,7 @@ const AttendanceManagementPage: React.FC = () => {
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString(),
         },
-        { onConflict: "id" },
+        { onConflict: "employee_id,date,entry_number" },
       );
 
       if (error) throw error;
