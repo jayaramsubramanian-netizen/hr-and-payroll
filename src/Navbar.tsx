@@ -28,7 +28,7 @@ const Navbar: React.FC = () => {
     },
     {
       name: "My Payslips",
-      page: "payslips",
+      page: "my-payslips",
       icon: "💰",
       roles: ["Employee", "Manager", "HR/Payroll", "Management"],
     },

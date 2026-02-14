@@ -52,12 +52,14 @@ function AppContent() {
   // Add navigation event listener
   useEffect(() => {
     const handleNavigate = (e: any) => {
-      setCurrentPage(e.detail);
-      // Handle extra data if present
-      if (e.extraData) {
-        setPageData(e.extraData);
-      } else {
+      // Handle both string and object detail formats
+      if (typeof e.detail === "string") {
+        setCurrentPage(e.detail);
         setPageData(null);
+      } else if (typeof e.detail === "object" && e.detail.page) {
+        setCurrentPage(e.detail.page);
+        // Set any extra data (like employeeId)
+        setPageData(e.detail);
       }
     };
 

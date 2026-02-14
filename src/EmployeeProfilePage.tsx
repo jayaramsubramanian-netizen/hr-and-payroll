@@ -838,7 +838,7 @@ const EmployeeProfilePage: React.FC<ProfilePageProps> = ({ employeeId }) => {
                             <button
                               onClick={() => {
                                 const event = new CustomEvent("navigate", {
-                                  detail: "payslips",
+                                  detail: "my-payslips",
                                 });
                                 window.dispatchEvent(event);
                               }}
@@ -909,7 +909,7 @@ const EmployeeProfilePage: React.FC<ProfilePageProps> = ({ employeeId }) => {
                               <button
                                 onClick={() => {
                                   const event = new CustomEvent("navigate", {
-                                    detail: "payslips",
+                                    detail: "my-payslips",
                                   });
                                   window.dispatchEvent(event);
                                 }}
@@ -932,7 +932,7 @@ const EmployeeProfilePage: React.FC<ProfilePageProps> = ({ employeeId }) => {
                           <button
                             onClick={() => {
                               const event = new CustomEvent("navigate", {
-                                detail: "payslips",
+                                detail: "my-payslips",
                               });
                               window.dispatchEvent(event);
                             }}
