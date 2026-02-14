@@ -86,18 +86,6 @@ const Navbar: React.FC = () => {
     },
 
     {
-      name: "Add Employee",
-      page: "add-employee",
-      icon: "➕",
-      roles: ["HR/Payroll", "Management"],
-    },
-    {
-      name: "Payroll",
-      page: "payroll",
-      icon: "💵",
-      roles: ["HR/Payroll", "Management"],
-    },
-    {
       name: "Holidays",
       page: "holidays",
       icon: "📅",

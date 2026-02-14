@@ -52,11 +52,14 @@ function AppContent() {
   // Add navigation event listener
   useEffect(() => {
     const handleNavigate = (e: any) => {
+      console.log("Navigate event received:", e.detail);
       // Handle both string and object detail formats
       if (typeof e.detail === "string") {
+        console.log("Setting page to:", e.detail);
         setCurrentPage(e.detail);
         setPageData(null);
       } else if (typeof e.detail === "object" && e.detail.page) {
+        console.log("Setting page to:", e.detail.page, "with data:", e.detail);
         setCurrentPage(e.detail.page);
         // Set any extra data (like employeeId)
         setPageData(e.detail);
@@ -70,9 +73,7 @@ function AppContent() {
   const renderPage = () => {
     if (!currentUser) return null;
     // DEBUG: Log current state
-    console.log("Current Page:", currentPage);
-    console.log("Current User:", currentUser);
-    console.log("User Role:", currentUser.role);
+    console.log("Rendering page:", currentPage, "with pageData:", pageData);
 
     switch (currentPage) {
       case "dashboard":
@@ -130,15 +131,20 @@ function AppContent() {
           return <ReportsPage />;
         }
         return <UnauthorizedPage />;
+      
       case "my-profile":
         return <EmployeeProfilePage />;
 
       case "employee-profile":
+        console.log("Rendering employee profile with ID:", pageData?.employeeId);
         return <EmployeeProfilePage employeeId={pageData?.employeeId} />;
-      default:
-        return <Dashboard />;
+
       case "holidays":
         return <HolidayManagementPage />;
+
+      default:
+        console.log("No matching case for page:", currentPage, "returning Dashboard");
+        return <Dashboard />;
     }
   };
 
