@@ -103,7 +103,8 @@ const PendingRequestsPage: React.FC = () => {
           account_type: request.form_data.accountType,
           ifsc_code: request.form_data.routingNumber,
           emergency_contact_name: request.form_data.primaryContactName,
-          emergency_contact_relation: request.form_data.primaryContactRelationship,
+          emergency_contact_relation:
+            request.form_data.primaryContactRelationship,
           emergency_contact_number: request.form_data.primaryContactPhone,
         });
 

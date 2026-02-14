@@ -122,7 +122,9 @@ const ReportsPage: React.FC = () => {
       }
 
       // Fetch employee details for all employee IDs
-      const employeeIds = [...new Set(attendance.map((att) => att.employee_id))];
+      const employeeIds = [
+        ...new Set(attendance.map((att) => att.employee_id)),
+      ];
       const { data: employees, error: empError } = await supabase
         .from("users")
         .select("id, name, department, sub_department")
