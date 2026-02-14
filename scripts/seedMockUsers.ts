@@ -94,8 +94,8 @@ async function seedDatabase() {
       console.log(`Processing user: ${mockUser.id} (${mockUser.email})`);
 
       // 1. Create Supabase Auth user
-      const { data: authData, error: authError } = await supabase.auth.admin
-        .createUser({
+      const { data: authData, error: authError } =
+        await supabase.auth.admin.createUser({
           email: mockUser.email,
           password: mockUser.password,
           user_metadata: {
@@ -140,9 +140,7 @@ async function seedDatabase() {
         if (updateError) {
           console.error(`  ❌ Update error: ${updateError.message}`);
         } else {
-          console.log(
-            `  ✅ Updated user record with email and credentials`,
-          );
+          console.log(`  ✅ Updated user record with email and credentials`);
         }
       } else {
         // Create new user in users table
@@ -179,7 +177,9 @@ async function seedDatabase() {
   console.log("\n📋 Login Credentials:");
   console.log("─".repeat(60));
   mockUsers.forEach((user) => {
-    console.log(`ID: ${user.id.padEnd(10)} | Email: ${user.email.padEnd(25)} | Pass: ${user.password}`);
+    console.log(
+      `ID: ${user.id.padEnd(10)} | Email: ${user.email.padEnd(25)} | Pass: ${user.password}`,
+    );
   });
   console.log("─".repeat(60));
 

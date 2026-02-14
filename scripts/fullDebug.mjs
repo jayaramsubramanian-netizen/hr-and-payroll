@@ -48,7 +48,9 @@ async function fullDebug() {
   // Check 2: Test exact login query
   console.log("\n2️⃣  Testing Login Query:");
   console.log("─".repeat(70));
-  console.log("  Query: .from('users').select('*').eq('personal_email', 'rohan@avlm.com').single()");
+  console.log(
+    "  Query: .from('users').select('*').eq('personal_email', 'rohan@avlm.com').single()",
+  );
   const { data: queryResult, error: queryError } = await supabase
     .from("users")
     .select("*")
@@ -58,13 +60,17 @@ async function fullDebug() {
     console.error(`  ❌ Query Error: ${queryError.message}`);
   } else {
     console.log(`  Found ${queryResult.length} results:`);
-    queryResult.forEach((u) => console.log(`    ${JSON.stringify(u, null, 2)}`));
+    queryResult.forEach((u) =>
+      console.log(`    ${JSON.stringify(u, null, 2)}`),
+    );
   }
 
   // Check 3: Check Auth users
   console.log("\n3️⃣  Testing Auth Login:");
   console.log("─".repeat(70));
-  console.log("  Attempting: auth.signInWithPassword(rohan@avlm.com, HR001pass)");
+  console.log(
+    "  Attempting: auth.signInWithPassword(rohan@avlm.com, HR001pass)",
+  );
   const { data: authData, error: authError } =
     await supabase.auth.signInWithPassword({
       email: "rohan@avlm.com",
@@ -74,8 +80,12 @@ async function fullDebug() {
   if (authError) {
     console.error(`  ❌ Auth Error: ${authError.message}`);
     console.error(`  Code: ${authError.code}`);
-    console.log("\n  💡 ISSUE: Supabase Auth user doesn't exist for rohan@avlm.com");
-    console.log("  You need to create this user in Authentication > Users in Supabase dashboard");
+    console.log(
+      "\n  💡 ISSUE: Supabase Auth user doesn't exist for rohan@avlm.com",
+    );
+    console.log(
+      "  You need to create this user in Authentication > Users in Supabase dashboard",
+    );
   } else {
     console.log(`  ✅ Auth successful! User ID: ${authData.user.id}`);
     console.log(`  Email: ${authData.user.email}`);
@@ -89,7 +99,8 @@ async function fullDebug() {
     .select("id, personal_email");
 
   emails?.forEach((u) => {
-    const emailValue = u.personal_email === null ? "NULL" : `"${u.personal_email}"`;
+    const emailValue =
+      u.personal_email === null ? "NULL" : `"${u.personal_email}"`;
     console.log(`  ${u.id}: ${emailValue}`);
   });
 

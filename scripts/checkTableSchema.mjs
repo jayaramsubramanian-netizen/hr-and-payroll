@@ -28,10 +28,7 @@ async function checkTableSchema() {
 
   // Try to get one row to see what columns exist
   console.log("Attempting to read users table...");
-  const { data, error } = await supabase
-    .from("users")
-    .select("*")
-    .limit(1);
+  const { data, error } = await supabase.from("users").select("*").limit(1);
 
   if (error) {
     console.error(`Error: ${error.message}`);

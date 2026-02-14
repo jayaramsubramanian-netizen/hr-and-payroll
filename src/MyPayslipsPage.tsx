@@ -65,6 +65,7 @@ const MyPayslipsPage: React.FC = () => {
 
     try {
       setLoading(true);
+      console.log("Fetching payslips for employee:", currentUser.id);
       const { data, error } = await supabase
         .from("payslips")
         .select("*")
@@ -73,9 +74,10 @@ const MyPayslipsPage: React.FC = () => {
         .order("month", { ascending: false });
 
       if (error) throw error;
+      console.log("Payslips fetched:", data?.length || 0, "records");
       setPayslips(data || []);
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Error fetching payslips:", error);
     } finally {
       setLoading(false);
     }

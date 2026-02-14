@@ -532,10 +532,7 @@ const LeaveManagementPage: React.FC = () => {
                       );
 
                       return (
-                        <tr
-                          key={leave.id}
-                          className="hover:bg-gray-50"
-                        >
+                        <tr key={leave.id} className="hover:bg-gray-50">
                           <td className="w-32 px-4 py-4">
                             <div className="font-medium text-gray-900 text-sm truncate">
                               {leave.users?.name}

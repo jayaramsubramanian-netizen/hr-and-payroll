@@ -96,14 +96,12 @@ async function addSimpleUsers() {
           console.log(`  ✅ Updated\n`);
         }
       } else {
-        const { error: insertError } = await supabase
-          .from("users")
-          .insert({
-            id: mockUser.id,
-            name: mockUser.name,
-            role: mockUser.role,
-            department: mockUser.department,
-          });
+        const { error: insertError } = await supabase.from("users").insert({
+          id: mockUser.id,
+          name: mockUser.name,
+          role: mockUser.role,
+          department: mockUser.department,
+        });
 
         if (insertError) {
           console.error(`  ❌ Error: ${insertError.message}`);

@@ -180,7 +180,10 @@ const ReportsPage: React.FC = () => {
         return;
       }
 
-      let query = supabase.from("users").select("id, name, department, sub_department").eq("employment_status", "Active");
+      let query = supabase
+        .from("users")
+        .select("id, name, department, sub_department")
+        .eq("employment_status", "Active");
 
       if (filters.department) {
         query = query.eq("department", filters.department);
@@ -192,19 +195,29 @@ const ReportsPage: React.FC = () => {
         .select("employee_id, leave_type, status")
         .eq("status", "Approved");
 
-      const leaveCountByType = (leaveRequests || []).reduce((acc, req) => {
-        if (!acc[req.employee_id]) {
-          acc[req.employee_id] = { casual: 0, sick: 0, earned: 0, unpaid: 0 };
-        }
-        if (req.leave_type === "Casual Leave") acc[req.employee_id].casual++;
-        else if (req.leave_type === "Sick Leave") acc[req.employee_id].sick++;
-        else if (req.leave_type === "Earned Leave") acc[req.employee_id].earned++;
-        else if (req.leave_type === "Unpaid Leave") acc[req.employee_id].unpaid++;
-        return acc;
-      }, {} as Record<string, any>);
+      const leaveCountByType = (leaveRequests || []).reduce(
+        (acc, req) => {
+          if (!acc[req.employee_id]) {
+            acc[req.employee_id] = { casual: 0, sick: 0, earned: 0, unpaid: 0 };
+          }
+          if (req.leave_type === "Casual Leave") acc[req.employee_id].casual++;
+          else if (req.leave_type === "Sick Leave") acc[req.employee_id].sick++;
+          else if (req.leave_type === "Earned Leave")
+            acc[req.employee_id].earned++;
+          else if (req.leave_type === "Unpaid Leave")
+            acc[req.employee_id].unpaid++;
+          return acc;
+        },
+        {} as Record<string, any>,
+      );
 
       const processedData = employees.map((emp) => {
-        const leave = leaveCountByType[emp.id] || { casual: 0, sick: 0, earned: 0, unpaid: 0 };
+        const leave = leaveCountByType[emp.id] || {
+          casual: 0,
+          sick: 0,
+          earned: 0,
+          unpaid: 0,
+        };
         return {
           "Employee ID": emp.id,
           Name: emp.name,
@@ -214,7 +227,8 @@ const ReportsPage: React.FC = () => {
           "Sick Leave Requests": leave.sick,
           "Earned Leave Requests": leave.earned,
           "Unpaid Leave Requests": leave.unpaid,
-          "Total Approved Leaves": leave.casual + leave.sick + leave.earned + leave.unpaid,
+          "Total Approved Leaves":
+            leave.casual + leave.sick + leave.earned + leave.unpaid,
         };
       });
 

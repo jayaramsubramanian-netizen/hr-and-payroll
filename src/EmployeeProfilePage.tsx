@@ -110,6 +110,7 @@ const EmployeeProfilePage: React.FC<ProfilePageProps> = ({ employeeId }) => {
     try {
       setLoading(true);
       const targetId = employeeId || currentUser.id;
+      console.log("Fetching profile for ID:", targetId, "employeeId prop:", employeeId, "currentUser.id:", currentUser.id);
 
       const { data, error } = await supabase
         .from("users")
@@ -118,12 +119,13 @@ const EmployeeProfilePage: React.FC<ProfilePageProps> = ({ employeeId }) => {
         .single();
 
       if (error) throw error;
+      console.log("Profile loaded successfully:", data.name);
 
       setProfile(data);
       setEditForm(data);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error fetching profile:", error);
-      alert("Error loading profile");
+      alert("Error loading profile: " + error.message);
     } finally {
       setLoading(false);
     }

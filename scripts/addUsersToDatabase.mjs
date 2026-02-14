@@ -24,9 +24,7 @@ if (!supabaseUrl || !supabaseAnonKey) {
 }
 
 if (!supabaseUrl || !supabaseAnonKey) {
-  console.error(
-    "❌ Missing Supabase environment variables in .env.local:\n",
-  );
+  console.error("❌ Missing Supabase environment variables in .env.local:\n");
   console.error("   - VITE_SUPABASE_URL");
   console.error("   - VITE_SUPABASE_ANON_KEY\n");
   console.error("Please add these to your .env.local file.");

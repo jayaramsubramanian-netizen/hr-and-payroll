@@ -20,7 +20,7 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 async function testAttendanceInsert() {
   console.log("📋 Testing Attendance Table Operations...\n");
-  
+
   // Test 1: Try to insert
   console.log("1️⃣ Test INSERT with anon key:");
   const { data: insertData, error: insertError } = await supabase
@@ -33,7 +33,7 @@ async function testAttendanceInsert() {
       entry_number: 1,
     })
     .select();
-  
+
   if (insertError) {
     console.log("   ❌ Error:", insertError.message);
     console.log("   Code:", insertError.code);
@@ -47,7 +47,7 @@ async function testAttendanceInsert() {
     .from("attendance")
     .select("*")
     .limit(1);
-  
+
   if (selectError) {
     console.log("   ❌ Error:", selectError.message);
   } else {
@@ -57,7 +57,9 @@ async function testAttendanceInsert() {
   // Test 3: Check if RLS is enabled
   console.log("\n3️⃣ Check if RLS is enabled on attendance:");
   try {
-    const { data: rls } = await supabase.rpc("has_rls", { table_name: "attendance" });
+    const { data: rls } = await supabase.rpc("has_rls", {
+      table_name: "attendance",
+    });
     console.log("   RLS enabled:", rls);
   } catch (e) {
     console.log("   Could not check RLS status via RPC");
