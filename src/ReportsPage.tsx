@@ -103,12 +103,7 @@ const ReportsPage: React.FC = () => {
           clock_out,
           total_hours,
           status,
-          entry_number,
-          users!attendance_employee_id_fkey (
-            name,
-            department,
-            sub_department
-          )
+          entry_number
         `,
         )
         .gte("date", filters.startDate)
@@ -126,8 +121,19 @@ const ReportsPage: React.FC = () => {
         return;
       }
 
+      // Fetch employee details for all employee IDs
+      const employeeIds = [...new Set(attendance.map((att) => att.employee_id))];
+      const { data: employees, error: empError } = await supabase
+        .from("users")
+        .select("id, name, department, sub_department")
+        .in("id", employeeIds);
+
+      if (empError) throw empError;
+
+      const employeeMap = new Map(employees?.map((e) => [e.id, e]) || []);
+
       const processedData = attendance.map((att) => {
-        const user = Array.isArray(att.users) ? att.users[0] : att.users;
+        const user = employeeMap.get(att.employee_id);
         return {
           Date: new Date(att.date).toLocaleDateString(),
           "Employee ID": att.employee_id,

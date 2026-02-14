@@ -55,11 +55,16 @@ const ClockInOutPage: React.FC = () => {
       const { data, error } = await supabase
         .from("attendance")
         .insert({
-          id: `ATT-${currentUser.id}-${today}`,
+          id: `ATT-${currentUser.id}-${today}-1`,
           employee_id: currentUser.id,
           date: today,
           clock_in: time,
+          clock_out: null,
+          total_hours: 0,
           status: "Present",
+          entry_number: 1,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
         })
         .select()
         .single();
@@ -95,6 +100,7 @@ const ClockInOutPage: React.FC = () => {
         .update({
           clock_out: time,
           total_hours: parseFloat(totalHours),
+          status: "Present",
           updated_at: new Date().toISOString(),
         })
         .eq("id", todayAttendance.id)

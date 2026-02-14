@@ -231,8 +231,10 @@ const AttendanceManagementPage: React.FC = () => {
           clock_out: status === "Present" ? "17:00" : null,
           total_hours: status === "Present" ? 8 : 0,
           entry_number: 1,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
         },
-        { onConflict: "employee_id,date,entry_number" },
+        { onConflict: "id" },
       );
 
       if (error) throw error;
